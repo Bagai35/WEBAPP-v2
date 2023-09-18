@@ -1,4 +1,5 @@
 function calc() {
+
     const result = document.querySelector('.calculating__result span');
 
     let sex, height, weight, age, ratio;
@@ -15,11 +16,11 @@ function calc() {
     } else {
         ratio = 1.375;
         localStorage.setItem('ratio', 1.375);
-    }
+    }   
 
     function calcTotal() {
         if (!sex || !height || !weight || !age || !ratio) {
-            result.textContent = '____';
+            result.textContent = '_____';
             return;
         }
         if (sex === 'female') {
@@ -31,7 +32,6 @@ function calc() {
 
     calcTotal();
 
-
     function initLocalSettings(selector, activeClass) {
         const elements = document.querySelectorAll(selector);
 
@@ -39,21 +39,22 @@ function calc() {
             elem.classList.remove(activeClass);
             if (elem.getAttribute('id') === localStorage.getItem('sex')) {
                 elem.classList.add(activeClass);
-            }
+            } 
             if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
                 elem.classList.add(activeClass);
             }
         });
+
     }
 
-    initLocalSettings('#gender div', 'calculating__choose_item_active');
+    initLocalSettings('#gender div', 'calculating__choose-item_active');
     initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
 
-    function getStaticInformation(selector, activeClass) {
+    function getStaticInformaiton(selector, activeClass) {
         const elements = document.querySelectorAll(selector);
 
         elements.forEach(elem => {
-            elem.addEvenListener('click', (e) => {
+            elem.addEventListener('click', (e) => {
                 if (e.target.getAttribute('data-ratio')) {
                     ratio = +e.target.getAttribute('data-ratio');
                     localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
@@ -65,23 +66,28 @@ function calc() {
                 elements.forEach(elem => {
                     elem.classList.remove(activeClass);
                 });
+
                 e.target.classList.add(activeClass);
 
                 calcTotal();
+                
             });
         });
     }
-    getStaticInformation('#gender div', 'calculating__choose-item_active');
-    getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
+
+    getStaticInformaiton('#gender div', 'calculating__choose-item_active') ;
+    getStaticInformaiton('.calculating__choose_big div', 'calculating__choose-item_active');   
+
     function getDynamicInformation(selector) {
         const input = document.querySelector(selector);
+
         input.addEventListener('input', () => {
-            if (input.value.match(/\D/g)) {
+            if(input.value.match(/\D/g)) {
                 input.style.border = "1px solid red";
             } else {
                 input.style.border = 'none';
-            }
-            switch (input.getAttribute('id')) {
+            } 
+            switch(input.getAttribute('id')) {
                 case "height":
                     height = +input.value;
                     break;
@@ -90,7 +96,7 @@ function calc() {
                     break;
                 case "age":
                     age = +input.value;
-                    break;
+                    break;                
             }
 
             calcTotal();
@@ -100,6 +106,7 @@ function calc() {
     getDynamicInformation('#height');
     getDynamicInformation('#weight');
     getDynamicInformation('#age');
+
 }
 
 export default calc;

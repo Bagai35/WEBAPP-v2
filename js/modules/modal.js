@@ -1,6 +1,6 @@
 function closeModal(modalSelector) {
     const modal = document.querySelector(modalSelector);
-
+    
     modal.classList.add('hide');
     modal.classList.remove('show');
     document.body.style.overflow = '';
@@ -20,10 +20,10 @@ function openModal(modalSelector, modalTimerId) {
 
 function modal(triggerSelector, modalSelector, modalTimerId) {
     const modalTrigger = document.querySelectorAll(triggerSelector),
-        modal = document.querySelector(modalSelector);
+    modal = document.querySelector(modalSelector);
 
     modalTrigger.forEach(btn => {
-        btn.addEvenListener('click', () => openModal(modalSelector, modalTimerId));
+        btn.addEventListener('click', () => openModal(modalSelector, modalTimerId));
     });
 
     modal.addEventListener('click', (e) => {
@@ -33,18 +33,19 @@ function modal(triggerSelector, modalSelector, modalTimerId) {
     });
 
     document.addEventListener('keydown', (e) => {
-        if ((e.code === "Escape" || e.code === "KeyZ") && modal.classList.contains('show')) {
+        if (e.code === "Escape" && modal.classList.contains('show')) {
             closeModal(modalSelector);
         }
     });
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-            openModal();
+            openModal(modalSelector, modalTimerId);
             window.removeEventListener('scroll', showModalByScroll);
         }
     }
     window.addEventListener('scroll', showModalByScroll);
+
 }
 
 export default modal;
